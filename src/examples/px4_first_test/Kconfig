@@ -1,0 +1,5 @@
+menuconfig EXAMPLES_PX4_FIRST_TEST
+	bool "px4_first_test"
+	default n
+	---help---
+		Enable support for px4_first_test
