@@ -81,7 +81,6 @@ public:
 	 * Must be called at 50Hz or greater
 	 */
 	void update_vehicle_state_estimates(float equivalent_airspeed, const float speed_deriv_forward, bool altitude_lock,
-					    bool in_air,
 					    float altitude, float vz);
 
 	/**
@@ -98,6 +97,23 @@ public:
 	float get_throttle_trim() { return _throttle_trim; }
 
 	void reset_state() { _states_initialized = false; }
+
+	void resetIntegrals()
+	{
+		_throttle_integ_state =  0.0f;
+		_pitch_integ_state = 0.0f;
+	}
+
+	/**
+	 * @brief Resets the altitude and height rate control trajectory generators to the input altitude
+	 *
+	 * @param altitude Vehicle altitude (AMSL) [m]
+	 */
+	void resetTrajectoryGenerators(const float altitude)
+	{
+		_alt_control_traj_generator.reset(0, 0, altitude);
+		_velocity_control_traj_generator.reset(0.0f, 0.0f, altitude);
+	}
 
 	enum ECL_TECS_MODE {
 		ECL_TECS_MODE_NORMAL = 0,
@@ -203,8 +219,11 @@ public:
 
 private:
 
+	// [0,1] percentage of true airspeed trim corresponding to expected (safe) true airspeed tracking errors
+	static constexpr float kTASErrorPercentage = 0.15;
+
 	static constexpr float _jerk_max =
-		1000.0f;	// maximum jerk for creating height rate trajectories, we want infinite jerk so set a high value
+		1000.0f;
 
 	enum ECL_TECS_MODE _tecs_mode {ECL_TECS_MODE_NORMAL};
 
@@ -268,8 +287,8 @@ private:
 
 	// vehicle physical limits
 	float _pitch_setpoint_unc{0.0f};				///< pitch demand before limiting (rad)
-	float _STE_rate_max{0.0f};					///< specific total energy rate upper limit achieved when throttle is at _throttle_setpoint_max (m**2/sec**3)
-	float _STE_rate_min{0.0f};					///< specific total energy rate lower limit acheived when throttle is at _throttle_setpoint_min (m**2/sec**3)
+	float _STE_rate_max{FLT_EPSILON};				///< specific total energy rate upper limit achieved when throttle is at _throttle_setpoint_max (m**2/sec**3)
+	float _STE_rate_min{-FLT_EPSILON};				///< specific total energy rate lower limit acheived when throttle is at _throttle_setpoint_min (m**2/sec**3)
 	float _throttle_setpoint_max{0.0f};				///< normalised throttle upper limit
 	float _throttle_setpoint_min{0.0f};				///< normalised throttle lower limit
 	float _throttle_trim{0.0f};					///< throttle required to fly level at _EAS_setpoint, compensated for air density and vehicle weight
@@ -302,13 +321,12 @@ private:
 	static constexpr float DT_DEFAULT = 0.02f;			///< default value for _dt (sec)
 
 	// controller mode logic
-	bool _underspeed_detected{false};				///< true when an underspeed condition has been detected
+	float _percent_undersped{0.0f};					///< a continuous representation of how "undersped" the TAS is [0,1]
 	bool _detect_underspeed_enabled{true};				///< true when underspeed detection is enabled
 	bool _uncommanded_descent_recovery{false};			///< true when a continuous descent caused by an unachievable airspeed demand has been detected
 	bool _climbout_mode_active{false};				///< true when in climbout mode
 	bool _airspeed_enabled{false};					///< true when airspeed use has been enabled
-	bool _states_initialized{false};					///< true when TECS states have been iniitalized
-	bool _in_air{false};						///< true when the vehicle is flying
+	bool _states_initialized{false};				///< true when TECS states have been iniitalized
 
 	/**
 	 * Update the airspeed internal state using a second order complementary filter
@@ -327,7 +345,7 @@ private:
 			float alt_amsl);
 
 	/**
-	 * Detect if the system is not capable of maintaining airspeed
+	 * Detect how undersped the aircraft is
 	 */
 	void _detect_underspeed();
 

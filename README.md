@@ -10,8 +10,8 @@ This repository holds the [PX4](http://px4.io) flight control solution for drone
 
 PX4 is highly portable, OS-independent and supports Linux, NuttX and MacOS out of the box.
 
-* Official Website: http://px4.io (License: BSD 3-clause, [LICENSE](https://github.com/PX4/PX4-Autopilot/blob/master/LICENSE))
-* [Supported airframes](https://docs.px4.io/main/en/airframes/airframe_reference.html) ([portfolio](http://px4.io/#airframes)):
+* Official Website: http://px4.io (License: BSD 3-clause, [LICENSE](https://github.com/PX4/PX4-Autopilot/blob/main/LICENSE))
+* [Supported airframes](https://docs.px4.io/main/en/airframes/airframe_reference.html) ([portfolio](https://px4.io/ecosystem/commercial-systems/)):
   * [Multicopters](https://docs.px4.io/main/en/frames_multicopter/)
   * [Fixed wing](https://docs.px4.io/main/en/frames_plane/)
   * [VTOL](https://docs.px4.io/main/en/frames_vtol/)
@@ -120,3 +120,11 @@ Additional information about supported hardware can be found in [PX4 user Guide 
 ## Project Roadmap
 
 A high level project roadmap is available [here](https://github.com/orgs/PX4/projects/25).
+
+## Project Governance
+
+The PX4 Autopilot project including all of its trademarks is hosted under [Dronecode](https://www.dronecode.org/), part of the Linux Foundation.
+
+<a href="https://www.dronecode.org/" style="padding:20px" ><img src="https://mavlink.io/assets/site/logo_dronecode.png" alt="Dronecode Logo" width="110px"/></a>
+<a href="https://www.linuxfoundation.org/projects" style="padding:20px;"><img src="https://mavlink.io/assets/site/logo_linux_foundation.png" alt="Linux Foundation Logo" width="80px" /></a>
+<div style="padding:10px">&nbsp;</div>

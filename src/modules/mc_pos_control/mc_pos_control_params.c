@@ -242,7 +242,7 @@ PARAM_DEFINE_FLOAT(MPC_Z_VEL_MAX_UP, 3.f);
  * @decimal 1
  * @group Multicopter Position Control
  */
-PARAM_DEFINE_FLOAT(MPC_Z_V_AUTO_DN, 1.f);
+PARAM_DEFINE_FLOAT(MPC_Z_V_AUTO_DN, 1.5f);
 
 /**
  * Maximum descent velocity
@@ -257,7 +257,7 @@ PARAM_DEFINE_FLOAT(MPC_Z_V_AUTO_DN, 1.f);
  * @decimal 1
  * @group Multicopter Position Control
  */
-PARAM_DEFINE_FLOAT(MPC_Z_VEL_MAX_DN, 1.f);
+PARAM_DEFINE_FLOAT(MPC_Z_VEL_MAX_DN, 1.5f);
 
 /**
  * Proportional gain for horizontal position error
@@ -848,7 +848,7 @@ PARAM_DEFINE_INT32(MPC_YAW_MODE, 0);
 PARAM_DEFINE_FLOAT(SYS_VEHICLE_RESP, -0.4f);
 
 /**
- * Overall Horizonal Velocity Limit
+ * Overall Horizontal Velocity Limit
  *
  * If set to a value greater than zero, other parameters are automatically set (such as
  * MPC_XY_VEL_MAX or MPC_VEL_MANUAL).
